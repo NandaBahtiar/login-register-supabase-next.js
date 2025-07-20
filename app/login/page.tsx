@@ -13,6 +13,14 @@ export default function LoginPage() {
         }
     }
 
+    const handleSignup = async (formData: FormData) => {
+        setErrorMessage(null) // Clear previous errors
+        const result = await signup(formData)
+        if (!result.success) {
+            setErrorMessage(result.message || 'Signup failed')
+        }
+    }
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
@@ -61,7 +69,11 @@ export default function LoginPage() {
                         </button>
                         <button
                             className="px-4 py-2 font-medium text-indigo-600 bg-transparent rounded-md hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            formAction={signup}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                const formData = new FormData(e.currentTarget.form!)
+                                handleSignup(formData)
+                            }}
                         >
                             Sign up
                         </button>
