@@ -4,10 +4,12 @@ import { useState } from 'react'
 
 export default function LoginPage() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const [successMessage, setSuccessMessage] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
 
     const handleLogin = async (formData: FormData) => {
         setErrorMessage(null) // Clear previous errors
+        setSuccessMessage(null) // Clear previous success messages
         setIsLoading(true)
         const result = await login(formData)
         if (!result.success) {
@@ -18,10 +20,13 @@ export default function LoginPage() {
 
     const handleSignup = async (formData: FormData) => {
         setErrorMessage(null) // Clear previous errors
+        setSuccessMessage(null) // Clear previous success messages
         setIsLoading(true)
         const result = await signup(formData)
         if (!result.success) {
             setErrorMessage(result.message || 'Signup failed')
+        } else {
+            setSuccessMessage('Signup successful! Please check your email for confirmation.')
         }
         setIsLoading(false)
     }
@@ -34,6 +39,12 @@ export default function LoginPage() {
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                         <strong className="font-bold">Error!</strong>
                         <span className="block sm:inline"> {errorMessage}</span>
+                    </div>
+                )}
+                {successMessage && (
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong className="font-bold">Success!</strong>
+                        <span className="block sm:inline"> {successMessage}</span>
                     </div>
                 )}
                 <form className="space-y-6">

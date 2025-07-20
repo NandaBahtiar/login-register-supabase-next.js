@@ -44,8 +44,6 @@ export async function signup(formData: FormData): Promise<{ success: boolean; me
         return { success: false, message: error.message }
     }
 
-    revalidatePath('/', 'layout')
-    redirect('/')
     return { success: true }
 }
 
