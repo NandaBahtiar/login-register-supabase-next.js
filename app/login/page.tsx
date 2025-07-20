@@ -4,21 +4,26 @@ import { useState } from 'react'
 
 export default function LoginPage() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleLogin = async (formData: FormData) => {
         setErrorMessage(null) // Clear previous errors
+        setIsLoading(true)
         const result = await login(formData)
         if (!result.success) {
             setErrorMessage(result.message || 'Login failed')
         }
+        setIsLoading(false)
     }
 
     const handleSignup = async (formData: FormData) => {
         setErrorMessage(null) // Clear previous errors
+        setIsLoading(true)
         const result = await signup(formData)
         if (!result.success) {
             setErrorMessage(result.message || 'Signup failed')
         }
+        setIsLoading(false)
     }
 
     return (
@@ -42,6 +47,7 @@ export default function LoginPage() {
                             name="email"
                             type="email"
                             required
+                            disabled={isLoading}
                         />
                     </div>
                     <div>
@@ -54,6 +60,7 @@ export default function LoginPage() {
                             name="password"
                             type="password"
                             required
+                            disabled={isLoading}
                         />
                     </div>
                     <div className="flex items-center justify-between">
@@ -64,8 +71,9 @@ export default function LoginPage() {
                                 const formData = new FormData(e.currentTarget.form!)
                                 handleLogin(formData)
                             }}
+                            disabled={isLoading}
                         >
-                            Log in
+                            {isLoading ? 'Loading...' : 'Log in'}
                         </button>
                         <button
                             className="px-4 py-2 font-medium text-indigo-600 bg-transparent rounded-md hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -74,8 +82,9 @@ export default function LoginPage() {
                                 const formData = new FormData(e.currentTarget.form!)
                                 handleSignup(formData)
                             }}
+                            disabled={isLoading}
                         >
-                            Sign up
+                            {isLoading ? 'Loading...' : 'Sign up'}
                         </button>
                     </div>
                 </form>
